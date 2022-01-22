@@ -1,5 +1,5 @@
 const express = require('express');
-const { screenOff, sleep, shutdown } = require('./utils');
+const { screenOff, sleep, shutdown, restart } = require('./utils');
 
 const app = express();
 const PORT = 5001;
