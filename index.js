@@ -50,7 +50,7 @@ app.get('/:password/:mode', withPassword);
 
 // bonjour.publish({ name: 'remote-shutdown-service', type: 'http', port: PORT })
 
-mdns.createAdvertisement(mdns.tcp('http'), 5001, {name: 'remote-shutdown-service'}).start()
+mdns.createAdvertisement(mdns.tcp('http'), PORT, {name: 'remote-shutdown-service'}).start()
 
 app.listen(PORT, () => {
     const { networkInterfaces } = require('os');
