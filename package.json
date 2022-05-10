@@ -2,7 +2,8 @@
   "name": "shutdownnode",
   "version": "0.0.0",
   "description": "desktop utility for shutdown app",
-  "main": "index.js",
+  "exports": "./index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "bonjour": "^3.5.0",
+    "clipboardy": "^3.0.0",
     "express": "^4.17.2",
     "mdns": "^2.7.2",
     "turn-off-display": "^0.2.0"

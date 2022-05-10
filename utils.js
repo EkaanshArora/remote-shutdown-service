@@ -1,6 +1,7 @@
-const turnOffDisplay = require("turn-off-display");
-const os = require('os');
-const { exec } = require("child_process");
+import turnOffDisplay from 'turn-off-display'
+import clipboard from 'clipboardy'
+import os from 'os'
+import {exec} from 'child_process'
 
 let currentOs = os.type()
 
@@ -41,7 +42,7 @@ const shutdown = () => {
         }
     } else {
         try {
-            exec(`shutdown -h now`, (err, out, stde) => {
+            exec(`sudo shutdown -h now`, (err, out, stde) => {
                 if (err) {
                     console.log(err, out, stde)
                 } else {
@@ -66,7 +67,7 @@ const restart = () => {
             }
         })
     } else {
-        exec(`shutdown -r now`, (err, out, stde) => {
+        exec(`sudo shutdown -r now`, (err, out, stde) => {
             if (err) {
                 console.log(err, out, stde)
             } else {
@@ -92,7 +93,7 @@ const sleep = () => {
             console.log(err)
         }
     } else if (currentOs === 'Linux') {
-        exec(`systemctl suspend`, (err, out, stde) => {
+        exec(`sudo systemctl suspend`, (err, out, stde) => {
             if (err) {
                 console.log(err, out, stde)
             } else {
@@ -110,4 +111,12 @@ const sleep = () => {
     }
 }
 
-module.exports = {sleep, shutdown, screenOff, restart}
+const clip = () => {
+    console.log('clip')
+    let data = clipboard.readSync()
+    console.log(data)
+    return data
+}
+
+export {sleep, shutdown, screenOff, restart, clip}
+// module.exports = {sleep, shutdown, screenOff, restart, clip}

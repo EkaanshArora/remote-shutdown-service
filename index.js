@@ -1,7 +1,7 @@
-const express = require('express');
-const { screenOff, sleep, shutdown, restart } = require('./utils');
-const mdns = require('mdns')
-// const bonjour = require('bonjour')()
+import express from 'express'
+import { screenOff, sleep, shutdown, restart, clip } from './utils.js'
+import mdns from 'mdns'
+import {networkInterfaces} from 'os'
 
 const app = express();
 const PORT = 5001;
@@ -35,6 +35,11 @@ const withPassword = (req, resp) => {
             case 'restart':
                 restart()
                 break;
+            case 'clip':
+                let data = clip()
+                console.log(data);
+                return resp.json({ 'status': 'success', 'data': data });
+                // break;
             default:
                 break;
         }
@@ -53,7 +58,6 @@ app.get('/:password/:mode', withPassword);
 mdns.createAdvertisement(mdns.tcp('http'), 5001, {name: 'remote-shutdown-service'}).start()
 
 app.listen(PORT, () => {
-    const { networkInterfaces } = require('os');
 
 const nets = networkInterfaces();
 const results = Object.create(null); // Or just '{}', an empty object
