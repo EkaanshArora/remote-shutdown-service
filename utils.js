@@ -111,12 +111,16 @@ const sleep = () => {
     }
 }
 
-const clip = () => {
+const readClip = () => {
     console.log('clip')
     let data = clipboard.readSync()
     console.log(data)
     return data
 }
 
-export {sleep, shutdown, screenOff, restart, clip}
+const writeClip = (data) => {
+    clipboard.writeSync(data)
+}
+
+export {sleep, shutdown, screenOff, restart, readClip, writeClip}
 // module.exports = {sleep, shutdown, screenOff, restart, clip}

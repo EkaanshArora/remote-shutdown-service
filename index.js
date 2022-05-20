@@ -1,11 +1,13 @@
 import express from 'express'
-import { screenOff, sleep, shutdown, restart, clip } from './utils.js'
+import { screenOff, sleep, shutdown, restart, readClip, writeClip } from './utils.js'
 import mdns from 'mdns'
 import {networkInterfaces} from 'os'
 
 const app = express();
 const PORT = 5001;
 const password = 'e'
+
+app.use(express.json())
 
 const ping = (req, resp) => {
     resp.send({ message: 'pong' });
@@ -35,8 +37,17 @@ const withPassword = (req, resp) => {
             case 'restart':
                 restart()
                 break;
-            case 'clip':
-                let data = clip()
+            case 'writeclip':
+                if(req.body.clip) {
+                    console.log(req.body.clip)
+                    writeClip(req.body.clip)
+                } else {
+                    console.log(req.body);
+                    return resp.json({ 'status': 'error', 'data': "can't find clip in json body" });
+                }
+                break;
+            case 'readclip':
+                let data = readClip()
                 console.log(data);
                 return resp.json({ 'status': 'success', 'data': data });
                 // break;
@@ -52,7 +63,7 @@ const withPassword = (req, resp) => {
 
 app.get('/ping', ping)
 app.get('/:password/:mode', withPassword);
-
+app.post('/:password/:mode', withPassword);
 // bonjour.publish({ name: 'remote-shutdown-service', type: 'http', port: PORT })
 
 mdns.createAdvertisement(mdns.tcp('http'), 5001, {name: 'remote-shutdown-service'}).start()
